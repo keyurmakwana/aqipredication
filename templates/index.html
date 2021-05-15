@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Air Quality Index Predictor</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Ubuntu&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" href="static/images/globe.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <style>
+      .btn-group-lg>.btn, .btn-lg {
+        border-radius: 9rem;
+      }
+      .image{
+        position: relative;
+      }
+      .text{
+        position: absolute;
+        top: 20px;
+        left:30px;
+        color: white;
+        font-size: 15px
+      }
+      code{
+        color: white;
+        font-family: 'Source Code Pro', monospace;
+      }
+      pre{
+        background-color: white;
+        border-radius: 2px;
+        display: block;
+        color: black;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        margin-left: auto;
+        margin-right: auto;
+        overflow-x: auto;
+        padding: 1em;
+        position: relative;
+        white-space: pre-wrap;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 80px;
+        margin-top: 50px;
+        padding-bottom: 0;
+        font-family: 'Source Code Pro', monospace;
+        font-style: bold;
+      }
+      p{
+        font-family: 'Source Code Pro', monospace;
+        text-align: justify;
+      }
+      li{
+        font-family: 'Source Code Pro', monospace;
+      }
+      .img-thumbnail{
+        margin-left: 10px
+      }
+    </style>
+  </head>
+  <body>
+    <section id="title">
+      <div class="container-fluid" style="background-color:#695dbd; padding: 50px">
+        <center>
+          <h1 style="font-family: 'Montserrat', sans-serif;
+          font-size: 2.5rem;
+          line-height: 1.5;
+          font-weight: 700; color: white">Air Quality Index Prediction</h1>
+        </center>
+      </div>
+    </section>
+    <div class="image">
+      <img src="{{url_for('static', filename='images/nature1.jpg')}}" height="1200px" width="100%" style="opacity:1">
+
+      <div class="text">
+
+        <form action="{{ url_for('val')}}" method="POST">
+          <center>
+          <br><br><br><br>
+            <h3>Please click the button below to predict the AQI</h3>
+            <button style="font-size:20px;margin-top: 20px; width: 30%; padding: 25px 30px" type="submit" class="btn btn-dark btn-lg download-button"><b> Predict </b></button>
+          </center>
+        </form>
+
+        <form action="{{ url_for('predict')}}" method="POST">
+          <center>
+          <br><br><br><br>
+            <h3>Please click the button below to view the air quality data for next 10 days</h3>
+            <button style="font-size:20px;margin-top: 20px; width: 30%; padding: 25px 30px" type="submit" class="btn btn-dark btn-lg download-button"><b> Launch </b></button>
+          </center>
+        </form>
+        <br><br><br><br>
+        <div class="container-fluid">
+          <p><b>Members: -</b></p>
+          <p><ol><li>Vidit Naik (18DCE059)</li><li>Vishv Kaneria (18DCE040)</li><li>Keyur Makwana (18DCE051)</li></ol></p>
+            <p><b>Idea: -</b></p>
+            <p>In this project, we have made a web application that predicts the air quality index of the city
+            by the use of prediction algorithm (Random Forest) and will also provide the user recommendation accordingly about the index i.e. whether it is safe or not. and
+            also the user can enter the parameters asked and then predict the AQI.</p>
+            <p><b>Working: -</b></p>
+            <p>In this project we have used web scraping to scpare the data from a climate website (en.tutiempo.net) and then have done the preprocessing
+            of the dataset and have combined the data into a single csv file. Then we have implemented various Machine Learning models like Linear Regression,
+            Lasso and Ridge Resressor, Decision Tree Regressor, Random Forest Regressor, XGboost Regrssor and Artificial Neural Networks. Among all these algorithms
+            the accuracy of Random Forest was the best i.e. about 90%. So we have used Random Forest to predict the air quaity index for the next 10 days. And the user
+            can also provide the parameters and then predict the AQI.
+            For application development we have used Flask. We have integrated our model with the use of Jinja2 with flask. We have also used Virtual Machine instance in AWS for hosting our application.</p>
+            <p><b>Tools and Technology Used: -</b></p>
+            <p><ol><li> Web Scraping</li><li> Machine Learning</li><li>Cloud Computing (AWS)</li><li>Flask</li><li>Python</li><li>Jinja2</li></ol></p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="image">
+      <img class="fix" src="{{url_for('static', filename='images/nature1.jpg')}}" height="1000px" width="100%" style="opacity:1">
+
+      <div class="text">
+
+        <div class="container-fluid">
+            <pre>
+            <code>
+    [1]   import pandas as pd
+          import numpy as np
+          import matplotlib.pyplot as plt
+          import seaborn as sns
+
+          df=pd.read_csv('data/real_data/real_combine.csv')
+          df.head()
+          sns.heatmap(df.isnull(),yticklabels=False,cbar=False,cmap='viridis')
+          sns.pairplot(df)
+            </code>
+          </pre>
+
+        </div>
+        <div>
+          <img class="img-thumbnail" src="{{url_for('static', filename='images/sns.png')}}" height="450px" width="600px">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="image">
+      <img src="{{url_for('static', filename='images/nature1.jpg')}}" height="950px" width="100%" style="opacity:1">
+
+      <div class="text">
+
+        <div class="container-fluid">
+            <pre>
+            <code>
+    [2]   corrmat = df.corr()
+          top_corr_features = corrmat.index
+          plt.figure(figsize=(20,20))
+          #plot heat map
+          g=sns.heatmap(df[top_corr_features].corr(),annot=True,cmap="RdYlGn")
+            </code>
+          </pre>
+
+        </div>
+        <div>
+          <img class="img-thumbnail" src="{{url_for('static', filename='images/heatmap.png')}}" height="450px" width="600px">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="image">
+      <img class="fix" src="{{url_for('static', filename='images/nature1.jpg')}}" height="900px" width="100%" style="opacity:1">
+
+      <div class="text">
+
+        <div class="container-fluid">
+            <pre>
+            <code>
+    [3]   from sklearn.ensemble import ExtraTreesRegressor
+          import matplotlib.pyplot as plt
+          model = ExtraTreesRegressor()
+          model.fit(x,y)
+
+          from sklearn.model_selection import train_test_split
+          x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0)
+
+          from sklearn.ensemble import RandomForestRegressor
+          regressor=RandomForestRegressor()
+          regressor.fit(x_train,y_train)
+          print("Coefficient of determination R^2 -- on train set: {}".format(regressor.score(x_train, y_train)))
+
+          prediction=regressor.predict(x_test)
+          sns.distplot(y_test-prediction)
+            </code>
+          </pre>
+
+        </div>
+        <div>
+          <img class="img-thumbnail" src="{{url_for('static', filename='images/bell_curve.png')}}" height="450px" width="600px" >
+        </div>
+      </div>
+    </div>
+
+
+
+  </body>
+</html>
